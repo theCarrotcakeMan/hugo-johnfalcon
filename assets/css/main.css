@@ -1,0 +1,47 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+
+  @font-face {
+      font-family: 'DINNeuzeitGroteskStd';
+      src: url('/fonts/DINNeuzeitGroteskStd-BdCond.eot');
+      src: url('/fonts/DINNeuzeitGroteskStd-BdCond.eot?#iefix') format('embedded-opentype'),
+          url('/fonts/DINNeuzeitGroteskStd-BdCond.woff2') format('woff2'),
+          url('/fonts/DINNeuzeitGroteskStd-BdCond.woff') format('woff'),
+          url('/fonts/DINNeuzeitGroteskStd-BdCond.ttf') format('truetype'),
+          url('/fonts/DINNeuzeitGroteskStd-BdCond.svg#DINNeuzeitGroteskStd-BdCond') format('svg');
+      font-weight: bold;
+      font-style: normal;
+      font-display: swap;
+  }
+
+  .animate-flicker{
+    animation: flicker 1.5s infinite alternate;
+  }
+
+  /* Animate neon flicker */
+  @keyframes flicker {
+
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+
+          text-shadow:
+              -0.2rem -0.2rem 0.5rem #fff7ef,
+              0.2rem 0.2rem 0.5rem #fff7ef,
+              0 0 0.25rem #fff7ef,
+              0 0 0.25rem #fff7ef,
+              0 0 0.25rem #fff7ef,
+              0 0 0.25rem #fff7ef,
+              0 0 0.25rem #fff7ef;
+
+      }
+
+      20%, 24%, 55% {
+          text-shadow: none;
+          box-shadow: none;
+      }
+  }
+
+}

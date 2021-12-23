@@ -1,0 +1,28 @@
+{{ define "main" }}
+    <main aria-role="main" class="container w-4/5 md:w-screen min-h-screen mx-auto">
+      <div class="grid grid-flow-row-dense grid-cols-3 grid-rows-2  min-h-screen">
+
+        <section class="relative col-span-2 row-span-2">
+
+          {{ with .Params.media }}
+            <img class="block mx-auto absolute inset-8 h-4/5 w-auto w-max-3/4 max-h-screen" src="{{.}}" alt="">
+          {{ end }}
+
+          <div class="absolute bottom-0">
+            <h1 class="text-8xl md: text-7xl p-4 font-neuzeit uppercase leading-normal text-gray-dark">{{.Params.author}}</h1>
+          </div>
+          {{ with .Params.subtitle }}
+            <span class="absolute animate-flicker top-44 right-9 text-lg tracking-widest text-gray-700 font-mono rotate-90">{{.}}</span>
+          {{ end }}
+        </section>
+        <div id="navContainer" class="">
+          <p>This is a menu</p>
+        </div>
+      </div>
+      <section id="recent_content" class="w-full">
+        {{ range first 10 .Site.RegularPages }}
+            {{ .Render "summary"}}
+        {{ end }}
+      </section>
+    </main>
+{{ end }}
