@@ -112,5 +112,5 @@
     "unicode-match-property-value-ecmascript": "^2.0.0",
     "unicode-property-aliases-ecmascript": "^2.0.0",
     "wrappy": "^1.0.2"
-  },
+  }
 }
