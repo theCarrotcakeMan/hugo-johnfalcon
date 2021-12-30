@@ -6,13 +6,24 @@
   "author": "John Falcón",
   "license": "ISC",
   "description": "John Falcón, software architect personal website",
+  "scripts": {
+    "start": "npm:server",
+    "dev": "concurrently --kill-others npm:tail npm:server",
+    "server": "hugo server -D",
+    "tail": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/dist/main.css --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "devDependencies": {
     "@babel/cli": "^7.16.0",
     "@babel/core": "^7.16.5",
     "@babel/preset-env": "^7.16.5",
+    "@tailwindcss/typography": "^0.5.0",
+    "animated-tailwindcss": "^2.6.1",
     "tailwindcss": "^3.0.7"
   },
   "dependencies": {
+    "animate.css": "^4.1.1",
+    "animated-scroll-to": "^2.2.0",
     "ansi-styles": "^3.2.1",
     "anymatch": "^3.1.2",
     "babel-plugin-dynamic-import-node": "^2.3.3",
@@ -32,6 +43,7 @@
     "color-name": "^1.1.3",
     "commander": "^4.1.1",
     "concat-map": "^0.0.1",
+    "concurrently": "^6.5.1",
     "convert-source-map": "^1.8.0",
     "core-js-compat": "^3.20.0",
     "debug": "^4.3.3",
@@ -88,6 +100,7 @@
     "regjsparser": "^0.7.0",
     "resolve": "^1.20.0",
     "safe-buffer": "^5.1.2",
+    "scroll-triggers": "^4.4.0",
     "semver": "^6.3.0",
     "slash": "^2.0.0",
     "source-map": "^0.5.7",
@@ -100,8 +113,4 @@
     "unicode-property-aliases-ecmascript": "^2.0.0",
     "wrappy": "^1.0.2"
   },
-  "scripts": {
-    "tail": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/dist/main.css --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  }
 }
