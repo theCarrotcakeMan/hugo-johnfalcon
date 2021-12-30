@@ -7,6 +7,7 @@ copyright = "All rights reserved, John P Falcón"
 [params]
   subtitle = '..'
   author = 'John Falcón'
+  site_logo = 'https://endeavour-one.s3.us-west-2.amazonaws.com/assets/john-falcon-software-architect-optimized.png'
 
 [security]
   enableInlineShortcodes = false
@@ -18,3 +19,29 @@ copyright = "All rights reserved, John P Falcón"
   [security.http]
     methods = ['(?i)GET|POST']
     urls = ['.*']
+
+[menu]
+[[menu.main]]
+  identifier = 'about'
+  name = 'About John'
+  title = "Who is John Falcón"
+  url = '#about-john'
+  weight = 100
+[[menu.main]]
+  identifier = 'work'
+  name = 'Work'
+  title = "Work by John"
+  url = '#homepage-posts'
+  weight = 110
+[[menu.main]]
+  identifier = 'blog'
+  name = 'Blog'
+  title = "John's posts"
+  url = '/posts/'
+  weight = 120
+[[menu.main]]
+  identifier = 'contact'
+  name = 'Quote'
+  title = "Contact John"
+  url = '/contact-john-falcon/'
+  weight = 130
