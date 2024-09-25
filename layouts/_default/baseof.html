@@ -31,11 +31,9 @@
       {{ end }}
     {{ end }}
 
-    {{/* fetch transpiled js using babel */}}
-    {{ $opts := dict "noComments" true }}
-    {{ $transpiled := resources.Get "js/main.js" | babel }}
-    {{ if $transpiled }}
-      <script>{{ $transpiled.Content | safeJS }}</script>
+    {{ $jsBundle := resources.Get "js/dist/bundle.js" }}
+    {{ with $jsBundle }}
+      <script src="{{ .Permalink }}" type="text/javascript"></script>
     {{ end }}
 
     {{/* NOTE: These Hugo Internal Templates can be found starting at https://github.com/gohugoio/hugo/tree/master/tpl/tplimpl/embedded/templates */}}
@@ -50,7 +48,7 @@
 
   </head>
 
-  <body class="{{ $.Param "body_classes"  | default "bg-near-white"}}{{ with getenv "HUGO_ENV" }} {{ . }}{{ end }}">
+  <body class="{{ $.Param "body_classes"  | default "bg-bauhaus-paper"}}{{ with getenv "HUGO_ENV" }} {{ . }}{{ end }}">
 
     {{ block "header" . }}{{ partial "site-header.html" .}}{{ end }}
 

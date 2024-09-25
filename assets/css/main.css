@@ -19,7 +19,7 @@
   }
 
   .animate-flicker{
-    animation: flicker 1.5s infinite alternate;
+    animation: flicker 2.5s infinite alternate;
   }
 
   /* Animate neon flicker */
@@ -30,17 +30,18 @@
           text-shadow:
               -0.2rem -0.2rem 0.5rem #fff7ef,
               0.2rem 0.2rem 0.5rem #fff7ef,
-              0 0 0.25rem #fff7ef,
-              0 0 0.25rem #fff7ef,
-              0 0 0.25rem #fff7ef,
-              0 0 0.25rem #fff7ef,
-              0 0 0.25rem #fff7ef;
+              0 0 0.25rem #f2f2f2,
+              0 0 0.25rem #f2f2f2,
+              0 0 0.25rem #f2f2f2,
+              0 0 0.25rem #f2f2f2,
+              0 0 0.25rem #f2f2f2;
 
       }
 
-      20%, 24%, 55% {
+      20%, 55% {
           text-shadow: none;
-          box-shadow: none;
+          color: #df9282;
+          opacity: 0.5;
       }
   }
 

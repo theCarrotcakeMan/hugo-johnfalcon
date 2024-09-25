@@ -1,28 +1,65 @@
 {{ define "main" }}
-    <main aria-role="main" class="container w-4/5 md:w-screen min-h-screen mx-auto">
-      <div class="grid grid-flow-row-dense grid-cols-3 grid-rows-2  min-h-screen">
+    <main aria-role="main" class="z-40 max-h-screen overflow-y-scroll snap snap-y snap-mandatory">
 
-        <section class="relative col-span-2 row-span-2">
+      <!-- Snap HOMEPAGE -->
+      <div class="flex w-full h-screen snap-start">
 
-          {{ with .Params.media }}
-            <img class="block mx-auto absolute inset-8 h-4/5 w-auto w-max-3/4 max-h-screen" src="{{.}}" alt="">
-          {{ end }}
+        <div class="block relative container w-4/5 md:w-screen min-h-screen mx-auto">
 
-          <div class="absolute bottom-0">
-            <h1 class="text-8xl md: text-7xl p-4 font-neuzeit uppercase leading-normal text-gray-dark">{{.Params.author}}</h1>
+          <div class="grid grid-flow-row-dense grid-cols-3 grid-rows-2 min-h-screen">
+
+            <section class="relative width-full col-span-2 row-span-2">
+
+              {{ with .Params.media }}
+                <img class="block mx-auto absolute inset-8 h-4/5 w-auto w-max-3/4 max-h-screen" src="{{.}}" alt="">
+              {{ end }}
+
+              <div class="absolute bottom-0">
+                <h1 class="text-8xl md: text-7xl p-4 font-neuzeit uppercase leading-normal text-gray-dark">{{.Params.author}}</h1>
+              </div>
+              {{ with .Params.subtitle }}
+                <span class="absolute animate-flicker top-44 right-9 text-lg tracking-widest text-gray-700 font-mono rotate-90">{{.}}</span>
+              {{ end }}
+            </section>
+
+            <div id="" class="pt-3 pr-3"></div>
+
           </div>
-          {{ with .Params.subtitle }}
-            <span class="absolute animate-flicker top-44 right-9 text-lg tracking-widest text-gray-700 font-mono rotate-90">{{.}}</span>
-          {{ end }}
-        </section>
-        <div id="navContainer" class="">
-          <p>This is a menu</p>
+
         </div>
       </div>
-      <section id="recent_content" class="w-full">
-        {{ range first 10 .Site.RegularPages }}
-            {{ .Render "summary"}}
-        {{ end }}
-      </section>
+
+      <!-- Snap ABOUT -->
+      <div id="homepage-posts" class="w-full h-screen snap-start">
+
+        <div class="min-h-screen relative flex">
+
+          <section class="w-7/12 h-screen flex-auto justify-center">
+            <section id="recent_content" class="">
+              This is some recent content
+              {{ range first 10 .Site.RegularPages }}
+                  {{ .Render "summary"}}
+              {{ end }}
+            </section>
+          </section>
+
+          <section id="about-john" class="pt-20 w-5/12 h-screen flex-none items-center animate-animated animate-slideInRight animate-faster bg-slate-100 drop-shadow-lg">
+            <div class="absolute z-50 inset-y-20 right-3.5 p-0.5 w-7 h-7 rounded-full bg-gray-light drop-shadow-md cursor-pointer opacity-50 hover:opacity-70"><span class="material-icons">close</span></div>
+            <div class="max-h-52 overflow-hidden bg-white mb-4">
+              <img src="{{ .Params.media_about }}" alt="{{ .Params.author }}" class="frankReynolds sm:hidden w-full h-auto">
+              <img src="{{ .Params.media_about }}" alt="{{ .Params.author }}" class="frankReynolds hidden sm:block w-full h-auto">
+            </div>
+            <article class="p-4 prose prose-stone prose-sm">
+              {{ with .Content }}
+                {{.}}
+              {{ end }}
+            </article>
+
+          </section>
+
+        </div>
+
+      </div>
+
     </main>
 {{ end }}
