@@ -1,6 +1,6 @@
-<footer class="{{ .Site.Params.background_color_class | default "bg-transparent" }} absolute bottom-0 w-screen p-3" role="contentinfo">
+<footer class="{{ .Site.Params.background_color_class | default "bg-transparent" }} fixed bottom-0 w-screen p-3" role="contentinfo">
   <div class="grid grid-cols-1">
-    <a class="font-mono text-center text-xs font-gray-dark" href="{{ .Site.BaseURL }}" >
+    <a class="font-mono text-center drop-shadow-sm text-xs font-gray-dark" href="{{ .Site.BaseURL }}" >
       &copy; {{ with .Site.Copyright | default .Site.Title }} {{ . | safeHTML }} {{ now.Format "2006"}} {{ end }}
     </a>
     <div>{{ partial "social-follow.html" . }}</div>
