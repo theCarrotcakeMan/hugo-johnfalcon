@@ -9,7 +9,7 @@ description: "Expert at transforming innovative ideas from conceptual design to 
 keywords: "software, engineering software engineer, saas, fintech, development, cto, tech lead, architect, devops"
 subtitle: "growing code"
 media: "https://endeavour-one.s3.us-west-2.amazonaws.com/assets/john-falcon-software-architect-optimized.png"
-media_about: "https://endeavour-one.s3.us-west-2.amazonaws.com/assets/John_Falcon_SoftwareArchitect_darkDual.png"
+media_about: "https://endeavour-one.s3.us-west-2.amazonaws.com/assets/John_Software_Architect_Coffee_shot.jpg"
 
 ---
 
