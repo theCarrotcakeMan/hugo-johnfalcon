@@ -1,24 +1,13 @@
 baseURL = 'https://growingcode.studio/'
 languageCode = 'en-us'
-title = 'John Falcón [growing code] - Software Architect'
-theme = "ananke"
+title = 'John P Falcón [growing code] - Software Architect'
+theme = ["github.com/theNewDynamic/gohugo-theme-ananke"]
 copyright = "All rights reserved, John P Falcón"
 
 [params]
-  subtitle = '..'
-  author = 'John Falcón'
+  subtitle = 'Cloud Architect'
+  author = 'John P Falcón'
   site_logo = 'https://endeavour-one.s3.us-west-2.amazonaws.com/assets/john-falcon-software-architect-optimized.png'
-
-[security]
-  enableInlineShortcodes = false
-  [security.exec]
-    allow = ['^dart-sass-embedded$', '^go$', '^npx$', '^postcss$', '^babel$']
-    osEnv = ['(?i)^(PATH|PATHEXT|APPDATA|TMP|TEMP|TERM)$']
-  [security.funcs]
-    getenv = ['^HUGO_']
-  [security.http]
-    methods = ['(?i)GET|POST']
-    urls = ['.*']
 
 [menu]
 [[menu.main]]
@@ -45,3 +34,30 @@ copyright = "All rights reserved, John P Falcón"
   title = "Contact John"
   url = '/contact-john-falcon/'
   weight = 130
+
+[deployment]
+  [[deployment.targets]]
+    name = "aws"
+    URL = "s3://HugoWebsiteBucket"
+    region = "us-west-2"
+    cloudFrontDistributionID = "your-cloudfront-id"
+
+  # Specify your file patterns to match for deployment
+  [[deployment.matchers]]
+    pattern = "^.+\\.(js|css|html|svg|jpg|png|gif)$"
+    cacheControl = "max-age=31536000, no-transform, public"
+
+  [[deployment.matchers]]
+    pattern = "^index\\.html$"
+    cacheControl = "max-age=0, no-cache, no-store, must-revalidate"
+
+[security]
+  enableInlineShortcodes = false
+  [security.exec]
+    allow = ['^dart-sass-embedded$', '^go$', '^npx$', '^postcss$', '^babel$']
+    osEnv = ['(?i)^(PATH|PATHEXT|APPDATA|TMP|TEMP|TERM)$']
+  [security.funcs]
+    getenv = ['^HUGO_']
+  [security.http]
+    methods = ['(?i)GET|POST']
+    urls = ['.*']
