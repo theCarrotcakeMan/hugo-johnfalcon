@@ -61,7 +61,7 @@ export class HugoWebsiteStack extends cdk.Stack {
 
     // Deploy Hugo-generated files to S3 bucket
     new BucketDeployment(this, 'DeployWebsite', {
-      sources: [Source.asset(join(__dirname, '../public'))], // Path to Hugo's public folder
+      sources: [Source.asset(join(__dirname, '../../public'))], // Path to Hugo's public folder
       destinationBucket: websiteBucket,
       distribution, // Invalidate CloudFront cache on updates
       distributionPaths: ['/*'],
