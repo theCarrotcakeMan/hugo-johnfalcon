@@ -12,6 +12,7 @@ on:
     paths:
       - 'content/**'
       - 'layouts/**'
+      - 'assets/**'
       - 'config.toml'
     branches:
       - master
@@ -20,6 +21,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+
+    outputs:
+      build-path: ${{ steps.build.outputs.build-path }}
 
     steps:
       
@@ -32,14 +36,28 @@ jobs:
           hugo-version: 'latest'
 
       - name: Build Hugo Site
-        run: hugo --minify
+        run: | 
+          hugo --minify
+          echo "::set-output name=build-path::$(pwd)/public"  # Store the path to the build folder
+      
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: hugo-site
+          path: ./public  # Path to the built Hugo site
 
   deploy:
 
+    needs: build  # Wait for the build job to finish
     runs-on: ubuntu-latest
 
     steps:
-      
+      - name: Download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: hugo-site
+          path: ./public  # Download the build artifact
+
       - name: Deploy site with Hugo
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
