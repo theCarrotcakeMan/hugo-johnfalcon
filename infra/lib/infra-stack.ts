@@ -7,6 +7,8 @@ import { S3StaticWebsiteOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
 import { Certificate, CertificateValidation } from 'aws-cdk-lib/aws-certificatemanager';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { join } from 'path';
+import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam/lib/policy-statement';
+import { StarPrincipal } from 'aws-cdk-lib/aws-iam/lib/principals';
 
 export class HugoWebsiteStack extends cdk.Stack {
 
@@ -18,9 +20,23 @@ export class HugoWebsiteStack extends cdk.Stack {
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: '404.html',
       publicReadAccess: true,
-      blockPublicAccess: BlockPublicAccess.NONE,  // Explicitly allow public access
+      blockPublicAccess: {
+        blockPublicAcls: true,
+        ignorePublicAcls: true,
+        restrictPublicBuckets: false,
+        blockPublicPolicy: false,
+      },
       accessControl: BucketAccessControl.PUBLIC_READ,  // Ensure public read access
     });
+
+    websiteBucket.addToResourcePolicy(
+      new PolicyStatement({
+        actions: ['s3:GetObject'],
+        effect: Effect.ALLOW,
+        principals: [new StarPrincipal()],
+        resources: [websiteBucket.arnForObjects('*')]
+      })
+    )
 
     // Route custom domain using Route53
     const domainName = 'growingcode.studio';
