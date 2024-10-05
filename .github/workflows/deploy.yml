@@ -20,7 +20,7 @@ jobs:
           hugo-version: 'latest'
 
       - name: Install Dependencies
-        run: npm ci
+        run: npm install  --no-optional
 
       - name: Build Hugo Site
         run: hugo --minify
