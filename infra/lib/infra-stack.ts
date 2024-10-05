@@ -29,14 +29,14 @@ export class HugoWebsiteStack extends cdk.Stack {
       accessControl: BucketAccessControl.PUBLIC_READ,  // Ensure public read access
     });
 
-    websiteBucket.addToResourcePolicy(
-      new PolicyStatement({
-        actions: ['s3:GetObject'],
-        effect: Effect.ALLOW,
-        principals: [new StarPrincipal()],
-        resources: [websiteBucket.arnForObjects('*')]
-      })
-    )
+    // websiteBucket.addToResourcePolicy(
+    //   new PolicyStatement({
+    //     actions: ['s3:GetObject'],
+    //     effect: Effect.ALLOW,
+    //     principals: [new StarPrincipal()],
+    //     resources: [websiteBucket.arnForObjects('*')]
+    //   })
+    // )
 
     // Route custom domain using Route53
     const domainName = 'growingcode.studio';
