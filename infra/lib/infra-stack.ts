@@ -13,7 +13,6 @@ export class HugoWebsiteStack extends cdk.Stack {
     super(scope, id, props);
 
 
-    
     // Create an S3 bucket for website hosting
     const websiteBucket = new Bucket(this, 'HugoWebsiteBucket', {
       websiteIndexDocument: 'index.html',
