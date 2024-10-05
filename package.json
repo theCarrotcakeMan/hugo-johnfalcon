@@ -6,11 +6,15 @@
   "author": "John P Falcón",
   "license": "ISC",
   "description": "John Falcón, software architect professional website",
+  "workspaces": [
+    "infra"
+  ],
   "scripts": {
     "start": "npm:server",
     "debug": "concurrently --kill-others npm:tail npm:bundle npm:server",
-    "bundle": "webpack --watch",
     "server": "hugo server -D",
+    "bundle": "webpack --watch",
+    "deploy": "npm run deploy --workspace=infra",
     "tail": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/dist/main.css --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

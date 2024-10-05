@@ -33,5 +33,5 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: 'us-west-2'
         run: |
-          npm run cdk deploy --require-approval never
+          npm run deploy
           
