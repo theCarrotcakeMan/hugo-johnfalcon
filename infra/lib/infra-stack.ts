@@ -18,7 +18,8 @@ export class HugoWebsiteStack extends cdk.Stack {
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: '404.html',
       publicReadAccess: true,
-      accessControl: BucketAccessControl.PUBLIC_READ,
+      blockPublicAccess: BlockPublicAccess.NONE,  // Explicitly allow public access
+      accessControl: BucketAccessControl.PUBLIC_READ,  // Ensure public read access
     });
 
     // Route custom domain using Route53
