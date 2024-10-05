@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { Bucket, BucketAccessControl } from 'aws-cdk-lib/aws-s3';
+import { Bucket, , BucketAccessControl, BlockPublicAccess } from 'aws-cdk-lib/aws-s3';
 import { HostedZone } from 'aws-cdk-lib/aws-route53';
 import { Distribution, OriginAccessIdentity } from 'aws-cdk-lib/aws-cloudfront';
 import { S3StaticWebsiteOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
