@@ -1,12 +1,15 @@
-name: Deploy Hugo Site
+name: Deploy Infrastructure
 
 on:
   push:
+
+    paths:
+      - 'infra/**'  # Trigger this workflow when changes occur in the CDK code
     branches:
       - master
 
 jobs:
-  build:
+  prepare:
 
     runs-on: ubuntu-latest
 
@@ -15,24 +18,21 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
-      - name: Set up Hugo
-        uses: peaceiris/actions-hugo@v2
+      - name: Install Node.js
+        uses: actions/setup-node@v2
         with:
-          hugo-version: 'latest'
+          node-version: '22'  # Ensure the Node version matches CDK requirements
 
-      - name: Install Dependencies
+      - name: Install AWS CDK Dependencies
         run: npm ci
 
-      - name: Build Hugo Site
-        run: hugo --minify
-
-  deploy:
+  deploy-infrastructure:
 
     runs-on: ubuntu-latest
 
     steps:
       
-      - name: Deploy to S3 and CloudFront
+      - name: Deploy infra with CDK
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
