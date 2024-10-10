@@ -16,6 +16,8 @@ on:
       - 'config.toml'
     branches:
       - master
+    paths-ignore:
+      - 'infra/**'
 
 jobs:
   build:
