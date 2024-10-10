@@ -43,6 +43,7 @@ export class HugoWebsiteStack extends cdk.Stack {
       },
       domainNames: [domainName],
       certificate: cdk.aws_certificatemanager.Certificate.fromCertificateArn(this, 'SiteCert', certificateArn),
+      priceClass: cdk.aws_cloudfront.PriceClass.PRICE_CLASS_100,
     });
 
     // Deploy Hugo-generated files to S3 bucket
