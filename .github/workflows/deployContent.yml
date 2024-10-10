@@ -14,8 +14,6 @@ on:
       - 'layouts/**'
       - 'assets/**'
       - 'config.toml'
-    paths-ignore:
-      - 'infra/**'
     branches:
       - master
 
@@ -32,16 +30,35 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v2
 
+      # Check for infra changes on 'push' events
+      - name: Check for infra changes
+        id: infra_changes
+        if: github.event_name == 'push'  # Only run this on 'push' events
+        run: |
+          if git diff --name-only ${{ github.sha }}^ ${{ github.sha }} | grep -q '^infra/'; then
+            echo "infra-changes=true" >> $GITHUB_ENV
+          else
+            echo "infra-changes=false" >> $GITHUB_ENV
+
+      # Stop the job if infra changes are detected
+      - name: Stop workflow if infra is deploying
+        if: github.event_name == 'push' && env.infra_changes == 'true'
+        run: |
+          echo "Infra deployment detected. Stopping content deployment."
+          exit 0
+
       - name: Set up Hugo
+        if: github.event_name != 'push' || env.infra_changes == 'false'  # Always run for 'workflow_run', conditionally for 'push'
         uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: 'latest'
 
       - name: Build Hugo Site
+        if: github.event_name != 'push' || env.infra_changes == 'false'  # Always run for 'workflow_run', conditionally for 'push'
         run: | 
           hugo --minify
-          echo "build-path=$(pwd)/public" >> $GITHUB_ENV  # Use environment variable instead of set-output
-      
+          echo "build-path=$(pwd)/public" >> $GITHUB_ENV
+
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
         with:
