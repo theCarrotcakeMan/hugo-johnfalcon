@@ -1,9 +1,9 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { Bucket, BucketAccessControl, BlockPublicAccess } from 'aws-cdk-lib/aws-s3';
+import { Bucket, BlockPublicAccess } from 'aws-cdk-lib/aws-s3';
 import { HostedZone } from 'aws-cdk-lib/aws-route53';
 import { Distribution, OriginAccessIdentity } from 'aws-cdk-lib/aws-cloudfront';
-import { S3BucketOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
+import { S3Origin } from 'aws-cdk-lib/aws-cloudfront-origins';
 import { Certificate, CertificateValidation } from 'aws-cdk-lib/aws-certificatemanager';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { join } from 'path';
@@ -37,7 +37,7 @@ export class HugoWebsiteStack extends cdk.Stack {
 
     const distribution = new Distribution(this, 'WebsiteDistribution', {
       defaultBehavior: {
-        origin: new S3BucketOrigin(websiteBucket, { originAccessIdentity }),
+        origin: new S3Origin(websiteBucket, { originAccessIdentity }),
         viewerProtocolPolicy: cdk.aws_cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS, 
       },
       domainNames: [domainName],
