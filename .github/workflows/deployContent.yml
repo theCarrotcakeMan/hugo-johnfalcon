@@ -64,10 +64,6 @@ jobs:
         uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: 'latest'
-    
-      - name: Build Hugo Site
-        run: | 
-          hugo --minify
 
       - name: Download build artifact
         uses: actions/download-artifact@v3
