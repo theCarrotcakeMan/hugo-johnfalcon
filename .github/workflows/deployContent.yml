@@ -51,13 +51,13 @@ jobs:
           exit 0
 
       - name: Set up Hugo
-        if: github.event_name != 'push' || env.infra_changes == 'false'  # Always run for 'workflow_run', conditionally for 'push'
+        if: github.event_name != 'push' && env.infra_changes == 'false'  # Always run for 'workflow_run', conditionally for 'push'
         uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: 'latest'
 
       - name: Build Hugo Site
-        if: github.event_name != 'push' || env.infra_changes == 'false'  # Always run for 'workflow_run', conditionally for 'push'
+        if: github.event_name != 'push' && env.infra_changes == 'false'  # Always run for 'workflow_run', conditionally for 'push'
         run: | 
           hugo --minify
           echo "build-path=$(pwd)/public" >> $GITHUB_ENV
