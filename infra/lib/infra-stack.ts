@@ -30,10 +30,11 @@ export class HugoWebsiteStack extends cdk.Stack {
     const originAccessIdentity = new OriginAccessIdentity(this, 'OAI');
     websiteBucket.grantRead(originAccessIdentity);
 
-    const certificate = new Certificate(this, 'SiteCertificate', {
+    const certificateArn = new cdk.aws_certificatemanager.DnsValidatedCertificate(this, 'SiteCertificate', {
       domainName,
-      validation: CertificateValidation.fromDns(zone),
-    });
+      hostedZone: zone,
+      region: 'us-east-1',  // Explicitly specify 'us-east-1' region for CloudFront compatibility
+    }).certificateArn;
 
     const distribution = new Distribution(this, 'WebsiteDistribution', {
       defaultBehavior: {
@@ -41,7 +42,7 @@ export class HugoWebsiteStack extends cdk.Stack {
         viewerProtocolPolicy: cdk.aws_cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS, 
       },
       domainNames: [domainName],
-      certificate,
+      certificate: cdk.aws_certificatemanager.Certificate.fromCertificateArn(this, 'SiteCert', certificateArn),
     });
 
     // Deploy Hugo-generated files to S3 bucket
