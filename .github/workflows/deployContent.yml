@@ -48,7 +48,7 @@ jobs:
           name: hugo-site
           path: ./public  # Path to the built Hugo site
 
-  deploy:
+  deploy-content:
 
     needs: build  # Wait for the build job to finish
     runs-on: ubuntu-latest
@@ -78,4 +78,3 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: |
           hugo deploy
-          
