@@ -33,7 +33,7 @@ export class HugoWebsiteStack extends cdk.Stack {
     
     // Create a bucket policy to explicitly allow CloudFront's OAI to read the bucket objects
     websiteBucket.addToResourcePolicy(new cdk.aws_iam.PolicyStatement({
-      actions: ['s3:GetObject'],
+      actions: ["s3:GetBucket*", "s3:GetObject*", "s3:List*"],
       resources: [websiteBucket.arnForObjects('*')],  // Allow access to all objects in the bucket
       principals: [originAccessIdentity.grantPrincipal],  // Grant access to the CloudFront OAI
     }));
