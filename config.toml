@@ -38,9 +38,9 @@ copyright = "All rights reserved, John P Falcón"
 [deployment]
   [[deployment.targets]]
     name = "aws"
-    URL = "s3://HugoWebsiteBucket"
+    URL = "s3://hugowebsitestack-hugowebsitebucket9c57a3f4-fvbkvhfnlgyc"
     region = "us-west-2"
-    cloudFrontDistributionID = "your-cloudfront-id"
+    cloudFrontDistributionID = "E3I8WHJ362WR96"
 
   # Specify your file patterns to match for deployment
   [[deployment.matchers]]
