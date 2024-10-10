@@ -40,7 +40,7 @@ jobs:
       - name: Build Hugo Site
         run: | 
           hugo --minify
-          echo "::set-output name=build-path::$(pwd)/public"  # Store the path to the build folder
+          echo "build-path=$(pwd)/public" >> $GITHUB_ENV  # Use environment variable instead of set-output
       
       - name: Upload build artifact
         uses: actions/upload-artifact@v3
