@@ -22,7 +22,7 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '22'  # Ensure the Node version matches CDK requirements
+          node-version: '20'  # Ensure the Node version matches CDK requirements
       - name: Set up Hugo
         uses: peaceiris/actions-hugo@v2
         with:
