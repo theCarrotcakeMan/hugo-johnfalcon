@@ -15,29 +15,12 @@ export class HugoWebsiteStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // Create an S3 bucket for website hosting
+    // Create an S3 bucket for website hosting (without public access)
     const websiteBucket = new Bucket(this, 'HugoWebsiteBucket', {
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: '404.html',
-      publicReadAccess: true,
-      blockPublicAccess: {
-        blockPublicAcls: true,
-        ignorePublicAcls: true,
-        restrictPublicBuckets: false,
-        blockPublicPolicy: false,
-      },
-      accessControl: BucketAccessControl.PUBLIC_READ,  // Ensure public read access
+      blockPublicAccess: BlockPublicAccess.BLOCK_ALL  // Ensure the bucket is private
     });
-
-    
-    // websiteBucket.addToResourcePolicy(
-    //   new PolicyStatement({
-    //     actions: ['s3:GetObject'],
-    //     effect: Effect.ALLOW,
-    //     principals: [new StarPrincipal()],
-    //     resources: [websiteBucket.arnForObjects('*')]
-    //   })
-    // )
 
     // Route custom domain using Route53
     const domainName = 'growingcode.studio';
@@ -54,7 +37,8 @@ export class HugoWebsiteStack extends cdk.Stack {
 
     const distribution = new Distribution(this, 'WebsiteDistribution', {
       defaultBehavior: {
-        origin: new S3StaticWebsiteOrigin(websiteBucket),
+        origin: new S3Origin(websiteBucket, { originAccessIdentity }),
+        viewerProtocolPolicy: cdk.aws_cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS, 
       },
       domainNames: [domainName],
       certificate,
