@@ -9,7 +9,7 @@ import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { join } from 'path';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam/lib/policy-statement';
 import { StarPrincipal } from 'aws-cdk-lib/aws-iam/lib/principals';
-import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets/lib/cloudfront-target';
+import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
 
 export class HugoWebsiteStack extends cdk.Stack {
 
