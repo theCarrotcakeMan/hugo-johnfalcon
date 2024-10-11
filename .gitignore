@@ -5,3 +5,4 @@ node_modules/*
 /tmp
 # Hugo default output directory
 /public
+.env
