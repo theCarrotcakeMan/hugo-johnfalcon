@@ -37,7 +37,7 @@ copyright = "All rights reserved, John P Falcón"
 
 [deployment]
   [[deployment.targets]]
-    name = "aws"
+    name = "s3"
     URL = "s3://hugowebsitestack-hugowebsitebucket9c57a3f4-fvbkvhfnlgyc"
     region = "us-west-2"
     cloudFrontDistributionID = "E3I8WHJ362WR96"
@@ -61,4 +61,3 @@ copyright = "All rights reserved, John P Falcón"
   [security.http]
     methods = ['(?i)GET|POST']
     urls = ['.*']
-    
