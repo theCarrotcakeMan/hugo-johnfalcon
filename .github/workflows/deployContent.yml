@@ -39,30 +39,31 @@ jobs:
           git fetch --prune --unshallow || true
           # Compare the last pushed commit against the current commit
           if git diff --name-only HEAD~1 HEAD | grep -q '^infra/'; then
-            echo "infra-changes=true" >> $GITHUB_ENV
+            echo "infra_changes=true" >> $GITHUB_ENV
           else
-            echo "infra-changes=false" >> $GITHUB_ENV
+            echo "infra_changes=false" >> $GITHUB_ENV
           fi
       # Stop the job if infra changes are detected
       - name: Stop workflow if infra is deploying
-        if: github.event_name == 'push' && env.infra_changes == 'true'
+        if: github.event_name != 'push' || env.infra_changes == 'false'
         run: |
           echo "Infra deployment detected. Stopping content deployment."
           exit 0
 
       - name: Set up Hugo
-        if: github.event_name != 'push' && env.infra_changes == 'false'  # Always run for 'workflow_run', conditionally for 'push'
+        if: github.event_name != 'push' || env.infra_changes == 'false'  # Always run for 'workflow_run', conditionally for 'push'
         uses: peaceiris/actions-hugo@v2
         with:
           hugo-version: 'latest'
 
       - name: Build Hugo Site
-        if: github.event_name != 'push' && env.infra_changes == 'false'  # Always run for 'workflow_run', conditionally for 'push'
+        if: github.event_name != 'push' || env.infra_changes == 'false'  # Always run for 'workflow_run', conditionally for 'push'
         run: | 
           hugo --minify
           echo "build-path=$(pwd)/public" >> $GITHUB_ENV
 
       - name: Upload build artifact
+        if: github.event_name != 'push' || env.infra_changes == 'false'  # Always run for 'workflow_run', conditionally for 'push'
         uses: actions/upload-artifact@v3
         with:
           name: hugo-site
