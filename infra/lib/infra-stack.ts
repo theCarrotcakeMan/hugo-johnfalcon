@@ -7,67 +7,68 @@ import { S3Origin } from 'aws-cdk-lib/aws-cloudfront-origins';
 import { Certificate, CertificateValidation } from 'aws-cdk-lib/aws-certificatemanager';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { join } from 'path';
-import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam/lib/policy-statement';
-import { StarPrincipal } from 'aws-cdk-lib/aws-iam/lib/principals';
+import { PolicyStatement, Effect } from 'aws-cdk-lib/aws-iam';
 import { CloudFrontTarget } from 'aws-cdk-lib/aws-route53-targets';
 
 export class HugoWebsiteStack extends cdk.Stack {
-
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // Create an S3 bucket for website hosting (without public access)
+    // Create an S3 bucket for website hosting (private access)
     const websiteBucket = new Bucket(this, 'HugoWebsiteBucket', {
       websiteIndexDocument: 'index.html',
       websiteErrorDocument: '404.html',
-      blockPublicAccess: BlockPublicAccess.BLOCK_ALL  // Ensure the bucket is private
+      blockPublicAccess: BlockPublicAccess.BLOCK_ALL, // Ensure the bucket is private
     });
 
-    // Route custom domain using Route53
+    // Route custom domain using Route 53
     const domainName = 'growingcode.studio';
     const zone = HostedZone.fromLookup(this, 'HostedZone', { domainName });
-    
-    // Add CloudFront distribution for better delivery and HTTPS support
+
+    // Create an OAI for CloudFront to securely access the bucket
     const originAccessIdentity = new OriginAccessIdentity(this, 'OAI');
+    console.log('CloudFront OAI ID:', originAccessIdentity.originAccessIdentityId);
+
+    // Grant read access to the OAI (simplified)
     websiteBucket.grantRead(originAccessIdentity);
-    
-    // Create a bucket policy to explicitly allow CloudFront's OAI to read the bucket objects
-    websiteBucket.addToResourcePolicy(new cdk.aws_iam.PolicyStatement({
-      actions: ["s3:GetBucket*", "s3:GetObject*", "s3:List*"],
-      resources: [websiteBucket.arnForObjects('*')],  // Allow access to all objects in the bucket
-      principals: [originAccessIdentity.grantPrincipal],  // Grant access to the CloudFront OAI
+
+    // Add an explicit bucket policy for CloudFront (OAI)
+    websiteBucket.addToResourcePolicy(new PolicyStatement({
+      effect: Effect.ALLOW,
+      actions: ['s3:GetObject'],
+      resources: [websiteBucket.arnForObjects('*')],
+      principals: [originAccessIdentity.grantPrincipal],
     }));
 
-    const certificateArn = new cdk.aws_certificatemanager.DnsValidatedCertificate(this, 'SiteCertificate', {
+    // Create an SSL certificate in the 'us-east-1' region for CloudFront
+    const certificate = new Certificate(this, 'SiteCertificate', {
       domainName,
-      hostedZone: zone,
-      region: 'us-east-1',  // Explicitly specify 'us-east-1' region for CloudFront compatibility
-    }).certificateArn;
-    
+      validation: CertificateValidation.fromDns(zone),
+    });
+
+    // CloudFront distribution pointing to the S3 bucket using the OAI
     const distribution = new Distribution(this, 'WebsiteDistribution', {
       defaultBehavior: {
         origin: new S3Origin(websiteBucket, { originAccessIdentity }),
-        viewerProtocolPolicy: cdk.aws_cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS, 
+        viewerProtocolPolicy: cdk.aws_cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       },
       domainNames: [domainName],
-      certificate: cdk.aws_certificatemanager.Certificate.fromCertificateArn(this, 'SiteCert', certificateArn),
-      priceClass: cdk.aws_cloudfront.PriceClass.PRICE_CLASS_100,
+      certificate,
     });
 
-    // Create an A record that points to the CloudFront distribution
+    // Create an A record in Route 53 pointing to the CloudFront distribution
     new ARecord(this, 'SiteAliasRecord', {
       recordName: domainName,
       target: RecordTarget.fromAlias(new CloudFrontTarget(distribution)),
       zone,
     });
-    
-    // Deploy Hugo-generated files to S3 bucket
+
+    // Deploy Hugo site to the S3 bucket
     new BucketDeployment(this, 'DeployWebsite', {
-      sources: [Source.asset(join(__dirname, '../../public'))], // Path to Hugo's public folder
+      sources: [Source.asset(join(__dirname, '../../public'))], // Hugo's public folder
       destinationBucket: websiteBucket,
-      distribution, // Invalidate CloudFront cache on updates
+      distribution, // Invalidate CloudFront cache after deployment
       distributionPaths: ['/*'],
     });
   }
-
 }
