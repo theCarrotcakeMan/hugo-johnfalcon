@@ -41,9 +41,10 @@ export class HugoWebsiteStack extends cdk.Stack {
     }));
 
     // Create an SSL certificate in the 'us-east-1' region for CloudFront
-    const certificate = new Certificate(this, 'SiteCertificate', {
-      domainName,
-      validation: CertificateValidation.fromDns(zone),
+    const certificate = new cdk.aws_certificatemanager.DnsValidatedCertificate(this, 'SiteCertificate', {
+      domainName: 'growingcode.studio',
+      hostedZone: zone,
+      region: 'us-east-1',
     });
 
     // CloudFront distribution pointing to the S3 bucket using the OAI
