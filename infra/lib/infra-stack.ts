@@ -3,7 +3,7 @@ import { Construct } from 'constructs';
 import { Bucket, BlockPublicAccess } from 'aws-cdk-lib/aws-s3';
 import { HostedZone, ARecord, RecordTarget, CnameRecord } from 'aws-cdk-lib/aws-route53';
 import { Distribution } from 'aws-cdk-lib/aws-cloudfront';
-import { S3Origin } from 'aws-cdk-lib/aws-cloudfront-origins';
+import { S3BucketOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
 import { join } from 'path';
@@ -41,7 +41,7 @@ export class HugoWebsiteStack extends cdk.Stack {
     // CloudFront distribution pointing to the S3 bucket
     const distribution = new Distribution(this, 'WebsiteDistribution', {
       defaultBehavior: {
-        origin: new S3Origin(websiteBucket), // Use S3Origin for secure access
+        origin: new S3BucketOrigin(websiteBucket),
         viewerProtocolPolicy: cdk.aws_cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       },
       domainNames: [domainName, `www.${domainName}`],
