@@ -2,7 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { Bucket, BlockPublicAccess } from 'aws-cdk-lib/aws-s3';
 import { HostedZone, ARecord, RecordTarget, CnameRecord } from 'aws-cdk-lib/aws-route53';
-import { Distribution, OriginAccessIdentity } from 'aws-cdk-lib/aws-cloudfront';
+import { Distribution } from 'aws-cdk-lib/aws-cloudfront';
 import { HttpOrigin } from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as acm from 'aws-cdk-lib/aws-certificatemanager';
 import { BucketDeployment, Source } from 'aws-cdk-lib/aws-s3-deployment';
@@ -68,12 +68,6 @@ export class HugoWebsiteStack extends cdk.Stack {
       destinationBucket: websiteBucket,
       distribution, // Invalidate CloudFront cache after deployment
       distributionPaths: ['/*'],
-    });
-
-    // Export the OAI ID as a CloudFormation output
-    new CfnOutput(this, 'OAIID', {
-      value: originAccessIdentity.originAccessIdentityId,
-      description: 'The ID of the CloudFront Origin Access Identity (OAI)',
     });
 
     new CfnOutput(this, 'CloudFrontURL', {
